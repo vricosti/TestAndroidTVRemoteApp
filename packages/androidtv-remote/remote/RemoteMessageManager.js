@@ -16,7 +16,7 @@ class RemoteMessageManager {
 
     create(payload){
         if(!payload.remotePingResponse){
-            console.log("Create Remote " + JSON.stringify(payload));
+            console.debug("Create Remote " + JSON.stringify(payload));
         }
 
         let errMsg = this.RemoteMessage.verify(payload);
@@ -28,8 +28,8 @@ class RemoteMessageManager {
         let array = this.RemoteMessage.encodeDelimited(message).finish()
 
         if(!payload.remotePingResponse){
-            //console.log("Sending " + Array.from(array));
-            console.log("Sending " + JSON.stringify(message.toJSON()));
+            //console.debug("Sending " + Array.from(array));
+            console.debug("Sending " + JSON.stringify(message.toJSON()));
         }
 
         return array;

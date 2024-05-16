@@ -47,7 +47,7 @@ export class AndroidRemote extends EventEmitter {
                 this.systeminfo);
             console.log('after new PairingManager');
 
-            this.pairingManager.addListener('secret', () => this.emit('secret'));
+            this.pairingManager.on('secret', () => this.emit('secret'));
 
             let paired = await this.pairingManager.start().catch((error) => {
                 console.error(error);
@@ -60,15 +60,15 @@ export class AndroidRemote extends EventEmitter {
 
         this.remoteManager = new RemoteManager(this.host, this.remote_port, this.cert, this.systeminfo);
 
-        this.remoteManager.addListener('powered', (powered) => this.emit('powered', powered));
+        this.remoteManager.on('powered', (powered) => this.emit('powered', powered));
 
-        this.remoteManager.addListener('volume', (volume) => this.emit('volume', volume));
+        this.remoteManager.on('volume', (volume) => this.emit('volume', volume));
 
-        this.remoteManager.addListener('current_app', (current_app) => this.emit('current_app', current_app));
+        this.remoteManager.on('current_app', (current_app) => this.emit('current_app', current_app));
 
-        this.remoteManager.addListener('ready', () => this.emit('ready'));
+        this.remoteManager.on('ready', () => this.emit('ready'));
 
-        this.remoteManager.addListener('unpaired', () => this.emit('unpaired'));
+        this.remoteManager.on('unpaired', () => this.emit('unpaired'));
 
         await new Promise(resolve => setTimeout(resolve, 1000));
 

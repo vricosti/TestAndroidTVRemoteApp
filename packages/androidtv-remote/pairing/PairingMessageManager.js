@@ -18,7 +18,7 @@ class PairingMessageManager {
     }
 
     create(payload){
-        console.log('PairingMessageManager.payload');
+        console.log('PairingMessageManager.create');
         let errMsg = this.PairingMessage.verify(payload);
         if (errMsg)
             throw Error(errMsg);

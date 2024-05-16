@@ -2,24 +2,20 @@ import {PairingMessageManager} from "./PairingMessageManager.js";
 import forge from 'node-forge';
 import {Buffer} from "buffer";
 import EventEmitter from "events";
+import { isNode } from "../utils/utils.js";
 //import {Socket as RNTls} from 'react-native-tls';
 import TcpSockets from 'react-native-tcp-socket';
-//import ca from '../../../assets/tls/server-cert.pem'
+
 
 class PairingManager extends EventEmitter {
 
     constructor(host, port, certs, service_name, systeminfo) {
-        console.log('Entering PairingManager.constructor');
         super();
-        console.log('After super()');
         this.host = host;
         this.port = port;
-        console.log('Before Buffer.from');
         this.chunks = Buffer.from([]);
-        console.log('After Buffer.from');
         this.certs = certs;
         this.service_name = service_name;
-        console.log('Before new PairingMessageManager');
         this.pairingMessageManager = new PairingMessageManager(systeminfo);
     }
 
@@ -54,39 +50,35 @@ class PairingManager extends EventEmitter {
     async start() {
         return new Promise((resolve, reject) => {
             let options = {
-                key : this.certs.key,
-                cert: this.certs.cert,
                 port: this.port,
                 host : this.host,
-                tls: true,
-                tlsCert: this.certs.cert,
-                rejectUnauthorized: false,
+            };
+            
+            if (isNode()) {
+                console.debug('set options to use node:tls');
+                options.key = this.certs.key;
+                options.cert = this.certs.cert;
+                options.rejectUnauthorized = false;
+            } else if (typeof HermesInternal !== "undefined") {
+                console.debug('set options to use react-native-tcp-socket');
+                options.tls = true;
+                options.tlsCheckValidity = false;
+                options.cert = this.certs.cert;
             }
 
-            console.log('options: ', options);
+            this.client = TcpSockets.connectTLS(options, () => {
+                console.debug(this.host + " Pairing connected");
+            });
 
-            
-            //this.client = new TcpSockets.Socket();
-
-            const clientSocket = new TcpSockets.Socket();
-            this.client = new TcpSockets.TLSSocket(clientSocket, options);
-
-            //const clientSocket = new TcpSockets.Socket();
-            //this.client = new TcpSockets.TLSSocket(clientSocket, { ca });
-            
-            
-            // let tls = new RNTls();
+            // this.client = new RNTls();
             // this.client.connect(options, () => {
-            //     console.debug(this.host + " Pairing connected")
-            // });
-
-            // this.client = tls.connect(options, () => {
             //     console.debug(this.host + " Pairing connected")
             // }); 
 
             this.client.pairingManager = this;
 
-            this.client.on("secureConnect", () => {
+            const connectEventName = isNode() ? "secureConnect" : "connect";
+            this.client.on(connectEventName, () => {
                 console.debug(this.host + " Pairing secure connected ");
                 this.client.write(this.pairingMessageManager.createPairingRequest(this.service_name));
             });
@@ -140,13 +132,6 @@ class PairingManager extends EventEmitter {
             this.client.on('error', (error) => {
                 console.error(error);
             });
-
-             // react-native-tcp
-             this.client.connect(options,
-                () => {
-                    console.log('Connected client');
-                }
-            );
         });
 
     }

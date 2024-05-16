@@ -1,9 +1,10 @@
 import { RemoteMessageManager } from "./RemoteMessageManager.js";
 import EventEmitter from "events";
 import {Buffer} from "buffer";
+import { isNode } from "../utils/utils.js";
 //import {Socket as RNTls} from 'react-native-tls';
 import TcpSockets from 'react-native-tcp-socket';
-//import ca from '../../../assets/tls/server-cert.pem'
+
 
 class RemoteManager extends EventEmitter {
     constructor(host, port, certs, systeminfo) {
@@ -18,44 +19,51 @@ class RemoteManager extends EventEmitter {
 
     async start() {
         return new Promise((resolve, reject) => {
+
             let options = {
-                tls: true,
-                tlsCert: this.certs.cert,
-                key : this.certs.key,
-                cert: this.certs.cert,
                 port: this.port,
                 host : this.host,
-                rejectUnauthorized: false
             };
-
-            console.log("Start Remote Connect");
-
-            //this.client = new TcpSockets.Socket();
-
-            const clientSocket = new TcpSockets.Socket();
-            this.client = new TcpSockets.TLSSocket(clientSocket, options);
             
+            if (isNode()) {
+                console.debug('set options to use node:tls');
+                options.key = this.certs.key;
+                options.cert = this.certs.cert;
+                options.rejectUnauthorized = false;
+            } else if (typeof HermesInternal !== "undefined") {
+                console.debug('set options to use react-native-tcp-socket');
+                options.tls = true;
+                options.tlsCheckValidity = false;
+                options.cert = this.certs.cert;
+            }
+
+            console.debug("Start Remote Connect");
+
+            // ORIGINAL CODE USING tls---------------------
             // this.client = tls.connect(options, () => {
             //     console.log("Remote connected")
             // });
 
-            // this.tls = new RNTls();
-            // this.client c
-
-            // this.client = tls.connect(options, () => {
-            //     //console.log("Remote connected")
-            // });
+            this.client = TcpSockets.connectTLS(options, () => {
+                console.debug(this.host + " Pairing connected");
+            });
+            
+            // this.client = new RNTls();
+            // this.client.connect(options, () => {
+            //     console.debug(this.host + " Pairing connected")
+            // }); 
 
             this.client.on('timeout', () => {
-                console.log('timeout');
+                console.debug('timeout');
                 this.client.destroy();
             });
 
             // Le ping est reçu toutes les 5 secondes
             this.client.setTimeout(10000);
 
-            this.client.on("secureConnect", () => {
-                console.log(this.host + " Remote secureConnect");
+            const connectEventName = isNode() ? "secureConnect" : "connect";
+            this.client.on(connectEventName, () => {
+                console.debug(this.host + " Remote secureConnect");
                 resolve(true);
             });
 
@@ -68,8 +76,8 @@ class RemoteManager extends EventEmitter {
                     let message = this.remoteMessageManager.parse(this.chunks);
 
                     if(!message.remotePingRequest){
-                        //console.log(this.host + " Receive : " + Array.from(this.chunks));
-                        console.log(this.host + " Receive : " + JSON.stringify(message.toJSON()));
+                        //console.debug(this.host + " Receive : " + Array.from(this.chunks));
+                        console.debug(this.host + " Receive : " + JSON.stringify(message.toJSON()));
                     }
 
                     if(message.remoteConfigure){
@@ -92,19 +100,19 @@ class RemoteManager extends EventEmitter {
                         this.emit('current_app', message.remoteImeKeyInject.appInfo.appPackage);
                     }
                     else if(message.remoteImeBatchEdit){
-                        console.log("Receive IME BATCH EDIT" + message.remoteImeBatchEdit);
+                        console.debug("Receive IME BATCH EDIT" + message.remoteImeBatchEdit);
                     }
                     else if(message.remoteImeShowRequest){
-                        console.log("Receive IME SHOW REQUEST" + message.remoteImeShowRequest);
+                        console.debug("Receive IME SHOW REQUEST" + message.remoteImeShowRequest);
                     }
                     else if(message.remoteVoiceBegin){
-                        //console.log("Receive VOICE BEGIN" + message.remoteVoiceBegin);
+                        //console.debug("Receive VOICE BEGIN" + message.remoteVoiceBegin);
                     }
                     else if(message.remoteVoicePayload){
-                        //console.log("Receive VOICE PAYLOAD" + message.remoteVoicePayload);
+                        //console.debug("Receive VOICE PAYLOAD" + message.remoteVoicePayload);
                     }
                     else if(message.remoteVoiceEnd){
-                        //console.log("Receive VOICE END" + message.remoteVoiceEnd);
+                        //console.debug("Receive VOICE END" + message.remoteVoiceEnd);
                     }
                     else if(message.remoteStart){
                         this.emit('powered', message.remoteStart.started);
@@ -115,13 +123,13 @@ class RemoteManager extends EventEmitter {
                             maximum : message.remoteSetVolumeLevel.volumeMax,
                             muted : message.remoteSetVolumeLevel.volumeMuted,
                         });
-                        //console.log("Receive SET VOLUME LEVEL" + message.remoteSetVolumeLevel.toJSON().toString());
+                        //console.debug("Receive SET VOLUME LEVEL" + message.remoteSetVolumeLevel.toJSON().toString());
                     }
                     else if(message.remoteSetPreferredAudioDevice){
-                        //console.log("Receive SET PREFERRED AUDIO DEVICE" + message.remoteSetPreferredAudioDevice);
+                        //console.debug("Receive SET PREFERRED AUDIO DEVICE" + message.remoteSetPreferredAudioDevice);
                     }
                     else if(message.remoteError){
-                        //console.log("Receive REMOTE ERROR");
+                        //console.debug("Receive REMOTE ERROR");
                         this.emit('error', {error : message.remoteError});
                     }
                     else{
@@ -169,13 +177,6 @@ class RemoteManager extends EventEmitter {
                 console.error(this.host, error);
                 this.error = error;
             });
-
-            // react-native-tcp
-            this.client.connect(options,
-                () => {
-                    console.log('Connected client');
-                }
-            );
         });
 
     }

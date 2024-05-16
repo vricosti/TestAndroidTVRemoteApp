@@ -346,9 +346,9 @@ TcpSocket.prototype._onError = function(error: string): void {
 };
 
 TcpSocket.prototype.write = function(chunk, encoding, cb) {
-  if (typeof chunk !== 'string' && !(Buffer.isBuffer(chunk))) {
+  if (typeof chunk !== 'string' && !Buffer.isBuffer(chunk) /*&& !(chunk instanceof Uint8Array)*/) {
     throw new TypeError(
-      'Invalid data, chunk must be a string or buffer, not ' + typeof chunk);
+      'TcpSocket.write: Invalid data, chunk must be a string or buffer, not ' + typeof chunk);
   }
 
   return stream.Duplex.prototype.write.apply(this, arguments);
@@ -370,11 +370,12 @@ TcpSocket.prototype._write = function(buffer: any, encoding: ?String, callback: 
     // str = Base64Str.encode(buffer);
     str = buffer.toString();
   } else if (Buffer.isBuffer(buffer)) {
-    // str = buffer.toString('base64');
     str = buffer.toString();
-  } else {
+  } /*else if (buffer instanceof Uint8Array) {
+    str = Buffer.from(buffer).toString();
+  }*/ else {
     throw new TypeError(
-      'Invalid data, chunk must be a string or buffer, not ' + typeof buffer);
+      'TcpSocket._write: Invalid data, chunk must be a string or buffer, not ' + typeof buffer);
   }
 
   Sockets.write(this._id, str, function(err) {

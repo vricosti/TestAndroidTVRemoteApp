@@ -9,7 +9,6 @@ import React, { useState, useEffect } from 'react';
 import { View, Text, TextInput, Button, Alert } from 'react-native';
 import { AndroidRemote, RemoteKeyCode, RemoteDirection } from './packages/androidtv-remote';
 
-
 function App(): React.JSX.Element {
     const [code, setCode] = useState('');
     const [connectionStatus, setConnectionStatus] = useState('Disconnected');
@@ -17,6 +16,7 @@ function App(): React.JSX.Element {
 
 
     useEffect(() => {
+        
       console.log('Entering useEffect()');
       
         const host = "192.168.1.102";  // Adjust the IP as needed

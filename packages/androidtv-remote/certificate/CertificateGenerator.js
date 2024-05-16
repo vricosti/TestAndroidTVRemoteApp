@@ -2,7 +2,7 @@ import forge from "node-forge"
 import modPow from 'react-native-modpow'
 
 // handle react-native slow modpow function
-if (HermesInternal) {
+if (typeof HermesInternal !== "undefined") {
     console.log('react-native detected => patch to use react-native-modpow');
 
     forge.jsbn.BigInteger.prototype.modPow = function nativeModPow(e, m) {
