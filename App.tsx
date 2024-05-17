@@ -7,7 +7,7 @@
 
 import React, { useState, useEffect } from 'react';
 import { View, Text, TextInput, Button, Alert } from 'react-native';
-import { AndroidRemote, RemoteKeyCode, RemoteDirection } from './packages/androidtv-remote';
+import { AndroidRemote, RemoteKeyCode, RemoteDirection } from './packages/androidtv-remote/src';
 
 function App(): React.JSX.Element {
     const [code, setCode] = useState('');
