@@ -1,8 +1,7 @@
 import { RemoteMessageManager } from "./RemoteMessageManager.js";
 import EventEmitter from "events";
 import {Buffer} from "buffer";
-import { isNode } from "../utils/utils.js";
-//import {Socket as RNTls} from 'react-native-tls';
+import * as jsEnv from "../utils/utils.js";
 import TcpSockets from 'react-native-tcp-socket';
 
 
@@ -23,36 +22,32 @@ class RemoteManager extends EventEmitter {
             let options = {
                 port: this.port,
                 host : this.host,
+                key: this.certs.key,
+                cert: this.certs.cert,
+                rejectUnauthorized: false,
             };
             
-            if (isNode()) {
-                console.debug('set options to use node:tls');
-                options.key = this.certs.key;
-                options.cert = this.certs.cert;
-                options.rejectUnauthorized = false;
-            } else if (typeof HermesInternal !== "undefined") {
-                console.debug('set options to use react-native-tcp-socket');
+            if (jsEnv.isNodeOrDeno) {
+                console.debug('connecting using node:tls');
+                this.client = tls.connect(options, () => {
+                    console.debug("Remote connected")
+                });
+                
+            } else if (jsEnv.isReactNative) {
+                console.debug('connecting using react-native-tcp-socket');
                 options.tls = true;
                 options.tlsCheckValidity = false;
-                options.cert = this.certs.cert;
+
+                this.client = TcpSockets.connectTLS(options, () => {
+                    console.debug("Remote connected")
+                });
             }
 
             console.debug("Start Remote Connect");
 
-            // ORIGINAL CODE USING tls---------------------
-            // this.client = tls.connect(options, () => {
-            //     console.log("Remote connected")
-            // });
-
-            this.client = TcpSockets.connectTLS(options, () => {
-                console.debug(this.host + " Pairing connected");
-            });
+           
             
-            // this.client = new RNTls();
-            // this.client.connect(options, () => {
-            //     console.debug(this.host + " Pairing connected")
-            // }); 
-
+            
             this.client.on('timeout', () => {
                 console.debug('timeout');
                 this.client.destroy();
@@ -61,7 +56,7 @@ class RemoteManager extends EventEmitter {
             // Le ping est reçu toutes les 5 secondes
             this.client.setTimeout(10000);
 
-            const connectEventName = isNode() ? "secureConnect" : "connect";
+            const connectEventName = jsEnv.isNodeOrDeno ? "secureConnect" : "connect";
             this.client.on(connectEventName, () => {
                 console.debug(this.host + " Remote secureConnect");
                 resolve(true);
