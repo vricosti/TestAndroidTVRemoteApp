@@ -52,10 +52,10 @@ class PairingManager extends EventEmitter {
             let options = {
                 port: this.port,
                 host : this.host,
-                //ca: require('../../../../servercert.pem'),
                 key: this.certs.key,
                 cert: this.certs.cert,
-                rejectUnauthorized: false,
+                rejectUnauthorized: false, // if true you can uncomment ca
+                 //ca: require('../../../../servercert.pem'),
             };
             
             if (jsEnv.isNodeOrDeno) {

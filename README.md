@@ -123,3 +123,58 @@ inside CertificateGenerator.generateFull
     </base-config>
 </network-security-config>
 ```
+
+
+Inside node_modules/react-native-tcp-socket/android/src/main/java/com/asterinet/react/tcpsocket:
+
+Add some code to see if passed ca was resolved:
+
+```
+...
+import java.io.InputStream;
+import java.io.ByteArrayOutputStream;
+import java.io.ByteArrayInputStream;
+...
+
+final class SSLCertificateHelper {
+public static final String LOG_TAG = "com.testandroidtvremoteapp";
+...
+
+static SSLSocketFactory createCustomTrustedSocketFactory(@NonNull final Context context, @NonNull final String rawResourceUri) throws IOException, GeneralSecurityException {
+        
+        Log.d(LOG_TAG, "Entering createCustomTrustedSocketFactory");
+        Boolean logCA = true;
+        Certificate ca = null;
+
+        if (logCA) {
+            InputStream caInput = getRawResourceStream(context, rawResourceUri);
+            Log.d(LOG_TAG, "rawResourceUri: " + rawResourceUri);
+            // Read the input stream into a byte array
+            ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
+            byte[] buffer = new byte[1024];
+            int bytesRead;
+            while ((bytesRead = caInput.read(buffer)) != -1) {
+                byteArrayOutputStream.write(buffer, 0, bytesRead);
+            }
+            byte[] caBytes = byteArrayOutputStream.toByteArray();
+            caInput.close();
+
+            // Convert the byte array to a string and log it
+            String caContent = new String(caBytes);
+            Log.d("CA Content", caContent);
+
+            // Convert the byte array back to InputStream
+            InputStream caInputForCert = new ByteArrayInputStream(caBytes);
+
+            // Generate the CA Certificate from the raw resource file
+            ca = CertificateFactory.getInstance("X.509").generateCertificate(caInputForCert);
+            caInputForCert.close();
+        } else {
+            InputStream caInput = getRawResourceStream(context, rawResourceUri);
+            // Generate the CA Certificate from the raw resource file
+            ca = CertificateFactory.getInstance("X.509").generateCertificate(caInput);
+            caInput.close();
+        }
+        ...
+}
+```
