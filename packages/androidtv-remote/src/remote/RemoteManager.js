@@ -22,7 +22,7 @@ class RemoteManager extends EventEmitter {
             let options = {
                 port: this.port,
                 host : this.host,
-                ca: require('../../../../servercert.pem'),
+                //ca: require('../../../../servercert.pem'),
                 key: this.certs.key,
                 cert: this.certs.cert,
                 rejectUnauthorized: false,
@@ -43,9 +43,6 @@ class RemoteManager extends EventEmitter {
 
             console.debug("Start Remote Connect");
 
-           
-            
-            
             this.client.on('timeout', () => {
                 console.debug('timeout');
                 this.client.destroy();
@@ -54,8 +51,7 @@ class RemoteManager extends EventEmitter {
             // Le ping est reçu toutes les 5 secondes
             this.client.setTimeout(10000);
 
-            const connectEventName = jsEnv.isNodeOrDeno ? "secureConnect" : "connect";
-            this.client.on(connectEventName, () => {
+            this.client.on("secureConnect", () => {
                 console.debug(this.host + " Remote secureConnect");
                 resolve(true);
             });

@@ -29,6 +29,7 @@ export class AndroidRemote extends EventEmitter {
         if (!this.cert.key || !this.cert.cert) {
             console.log('before CertificateGenerator.generateFull');
             this.cert = await CertificateGenerator.generateFull(
+                this.host,
                 this.service_name,
                 'CNT',
                 'ST',

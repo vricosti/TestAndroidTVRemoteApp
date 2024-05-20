@@ -19,7 +19,8 @@ function App(): React.JSX.Element {
         
       console.log('Entering useEffect()');
       
-        const host = "192.168.1.102";  // Adjust the IP as needed
+        const host = "192.168.1.102";
+        //const host = "android-2.local";
         const options = {
             pairing_port: 6467,
             remote_port: 6466,

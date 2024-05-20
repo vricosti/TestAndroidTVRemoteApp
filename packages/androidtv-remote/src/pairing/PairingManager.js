@@ -52,7 +52,6 @@ class PairingManager extends EventEmitter {
             let options = {
                 port: this.port,
                 host : this.host,
-                //ca: require('../../../../server-cert.pem'),
                 //ca: require('../../../../servercert.pem'),
                 key: this.certs.key,
                 cert: this.certs.cert,
@@ -74,7 +73,6 @@ class PairingManager extends EventEmitter {
 
             this.client.pairingManager = this;
 
-            //const connectEventName = jsEnv.isNodeOrDeno ? "secureConnect" : "connect";
             this.client.on("secureConnect", () => {
                 console.debug(this.host + " Pairing secure connected ");
                 this.client.write(this.pairingMessageManager.createPairingRequest(this.service_name));
