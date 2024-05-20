@@ -13,8 +13,8 @@ const config = {
         assetExts: [...defaultConfig.resolver.assetExts, 'pem', 'p12'],
         extraNodeModules: {
             //'androidtv-remote': path.resolve(__dirname, 'packages/androidtv-remote'),
-            //'tls': path.resolve(__dirname, 'node_modules/react-native-tls'),
-            'react-native-tls': path.resolve(__dirname, 'packages/react-native-tls'),
+            //'tls': path.resolve(__dirname, 'node_modules/react-native-tcp-socket'),
+            //'react-native-tls': path.resolve(__dirname, 'packages/react-native-tls'),
         },
       },
 };

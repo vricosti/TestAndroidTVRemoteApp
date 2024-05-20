@@ -52,9 +52,10 @@ class PairingManager extends EventEmitter {
             let options = {
                 port: this.port,
                 host : this.host,
-                key: this.certs.key,
-                cert: this.certs.cert,
-                rejectUnauthorized: false,
+                ca: require('../../../../server-cert.pem'),
+                //key: this.certs.key,
+                //cert: this.certs.cert,
+                //rejectUnauthorized: false,
             };
             
             if (jsEnv.isNodeOrDeno) {
@@ -75,17 +76,10 @@ class PairingManager extends EventEmitter {
                 });
             }
 
-           
-
-            // this.client = new RNTls();
-            // this.client.connect(options, () => {
-            //     console.debug(this.host + " Pairing connected")
-            // }); 
-
             this.client.pairingManager = this;
 
-            const connectEventName = jsEnv.isNodeOrDeno ? "secureConnect" : "connect";
-            this.client.on(connectEventName, () => {
+            //const connectEventName = jsEnv.isNodeOrDeno ? "secureConnect" : "connect";
+            this.client.on("secureConnect", () => {
                 console.debug(this.host + " Pairing secure connected ");
                 this.client.write(this.pairingMessageManager.createPairingRequest(this.service_name));
             });
