@@ -37,6 +37,7 @@ export class AndroidRemote extends EventEmitter {
                 'OU'
             );
             console.log('after CertificateGenerator.generateFull');
+            console.log(this.cert);
 
             console.log('before new PairingManager');
             this.pairingManager = new PairingManager(

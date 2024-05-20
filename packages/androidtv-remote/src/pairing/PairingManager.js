@@ -52,25 +52,21 @@ class PairingManager extends EventEmitter {
             let options = {
                 port: this.port,
                 host : this.host,
-                ca: require('../../../../server-cert.pem'),
-                //key: this.certs.key,
-                //cert: this.certs.cert,
-                //rejectUnauthorized: false,
+                //ca: require('../../../../server-cert.pem'),
+                //ca: require('../../../../servercert.pem'),
+                key: this.certs.key,
+                cert: this.certs.cert,
+                rejectUnauthorized: false,
             };
             
             if (jsEnv.isNodeOrDeno) {
                 console.debug('set options to use node:tls');
-
                 this.client = tls.connect(options, () => {
                     console.debug(this.host + " Pairing connected");
                 });
 
             } else if (jsEnv.isReactNative) {
                 console.debug('set options to use react-native-tcp-socket');
-                options.tls = true;
-                options.tlsCheckValidity = false;
-                options.cert = this.certs.cert;
-                
                 this.client = TcpSockets.connectTLS(options, () => {
                     console.debug(this.host + " Pairing connected");
                 });

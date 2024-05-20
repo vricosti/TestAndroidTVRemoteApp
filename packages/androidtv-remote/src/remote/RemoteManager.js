@@ -22,6 +22,7 @@ class RemoteManager extends EventEmitter {
             let options = {
                 port: this.port,
                 host : this.host,
+                ca: require('../../../../servercert.pem'),
                 key: this.certs.key,
                 cert: this.certs.cert,
                 rejectUnauthorized: false,
@@ -35,9 +36,6 @@ class RemoteManager extends EventEmitter {
                 
             } else if (jsEnv.isReactNative) {
                 console.debug('connecting using react-native-tcp-socket');
-                options.tls = true;
-                options.tlsCheckValidity = false;
-
                 this.client = TcpSockets.connectTLS(options, () => {
                     console.debug("Remote connected")
                 });
