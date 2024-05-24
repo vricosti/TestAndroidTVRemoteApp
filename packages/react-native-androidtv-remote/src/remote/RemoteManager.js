@@ -1,7 +1,6 @@
 import { RemoteMessageManager } from "./RemoteMessageManager.js";
 import EventEmitter from "events";
 import {Buffer} from "buffer";
-import * as jsEnv from "../utils/utils.js";
 import TcpSockets from 'react-native-tcp-socket';
 
 
@@ -24,24 +23,19 @@ class RemoteManager extends EventEmitter {
                 host : this.host,
                 key: this.certs.key,
                 cert: this.certs.cert,
-                rejectUnauthorized: false, // if true you can uncomment ca
-                 //ca: require('../../../../servercert.pem'),
+                rejectUnauthorized: false,
+                // Specific to react-native-tcp-socket (patched)
+                androidKeyStore: this.certs.androidKeyStore,
+                certAlias: this.certs.certAlias,
+                keyAlias: this.certs.keyAlias,
+                //ca: require('../../../../client-selfsigned.crt'),
             };
             
-            if (jsEnv.isNodeOrDeno) {
-                console.debug('connecting using node:tls');
-                this.client = tls.connect(options, () => {
-                    console.debug("Remote connected")
-                });
-                
-            } else if (jsEnv.isReactNative) {
-                console.debug('connecting using react-native-tcp-socket');
-                this.client = TcpSockets.connectTLS(options, () => {
-                    console.debug("Remote connected")
-                });
-            }
-
             console.debug("Start Remote Connect");
+
+            this.client = TcpSockets.connectTLS(options, () => {
+                console.debug("Remote connected")
+            });
 
             this.client.on('timeout', () => {
                 console.debug('timeout');

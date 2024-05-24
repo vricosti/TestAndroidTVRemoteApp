@@ -3106,6 +3106,7 @@ __metadata:
     react: 18.2.0
     react-native: 0.74.1
     react-native-modpow: ^1.1.0
+    react-native-secure-key-store: ^2.0.10
     react-native-tcp-socket: ^6.0.6
     react-test-renderer: 18.2.0
     stream-browserify: ^3.0.0
@@ -8135,6 +8136,13 @@ __metadata:
     react: "*"
     react-native: "*"
   checksum: 28cd098f5d9314dd14318550f49f430193af11ed6acf4610419abd0962950fbccbc9fc5f76913e658d37406a9f17d8bb4c73f33a96119ac1bfbdcae9ea2e4b34
+  languageName: node
+  linkType: hard
+
+"react-native-secure-key-store@npm:^2.0.10":
+  version: 2.0.10
+  resolution: "react-native-secure-key-store@npm:2.0.10"
+  checksum: 6b3a32ed016d8a0a2bb8a1a39261ffceae5b1825323ab9a93719a3d956f5eccbcbfec6f33dc360a9696f278e56591eff892603c1fce1a701472fb38ab57dacac
   languageName: node
   linkType: hard
 

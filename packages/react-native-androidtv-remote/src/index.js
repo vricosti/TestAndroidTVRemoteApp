@@ -13,7 +13,10 @@ export class AndroidRemote extends EventEmitter {
         this.cert = {
             key:options.cert?.key,
             cert:options.cert?.cert,
-        }
+            androidKeyStore: options.cert?.androidKeyStore ? options.cert?.androidKeyStore : '',
+            certAlias: options.cert?.certAlias ? options.cert?.certAlias : '',
+            keyAlias: options.cert?.keyAlias ? options.cert?.keyAlias : '',
+        };
         this.pairing_port = options.pairing_port?options.pairing_port:6467;
         this.remote_port = options.remote_port?options.remote_port:6466;
         this.service_name = options.service_name?options.service_name:"Service Name";
@@ -27,18 +30,15 @@ export class AndroidRemote extends EventEmitter {
 
         console.log('AndroidRemote.start');
         if (!this.cert.key || !this.cert.cert) {
-            console.log('before CertificateGenerator.generateFull');
-            this.cert = await CertificateGenerator.generateFull(
-                this.host,
-                this.service_name,
-                'CNT',
-                'ST',
-                'LOC',
-                'O',
-                'OU'
-            );
-            console.log('after CertificateGenerator.generateFull');
-            console.log(this.cert);
+            //console.log('before CertificateGenerator.generateFull');
+            
+            let androidKeyStore = this.cert.androidKeyStore;
+            let certAlias = this.cert.certAlias;
+            let keyAlias = this.cert.keyAlias;
+            this.cert = CertificateGenerator.generateFull(this.service_name);
+            this.cert.androidKeyStore = androidKeyStore;
+            this.cert.certAlias = certAlias;
+            this.cert.keyAlias = keyAlias;
 
             console.log('before new PairingManager');
             this.pairingManager = new PairingManager(

@@ -1,7 +1,7 @@
 {
-  "name": "androidtv-remote",
-  "version": "1.0.10",
-  "description": "AndroidTV Remote",
+  "name": "react-native-androidtv-remote",
+  "version": "1.0.0",
+  "description": "Port of AndroidTV Remote to react native",
   "main": "dist/index.js",
   "engines": {
     "node": ">=14.18.1"
@@ -16,12 +16,13 @@
     "freebox-player-pop",
     "freebox-mini-4k"
   ],
-  "author": "@louis49",
+  "author": "@vricosti",
   "license": "ISC",
   "dependencies": {
     "core-js": "^3.20.2",
     "node-forge": "^0.10.0",
-    "protobufjs": "^6.11.2"
+    "protobufjs": "^6.11.2",
+    "react-native-secure-key-store": "^2.0.10"
   },
   "devDependencies": {
     "@babel/cli": "^7.16.7",
@@ -30,8 +31,8 @@
     "babel-plugin-transform-import-meta": "^2.1.0"
   },
   "type": "commonjs",
-  "homepage": "https://github.com/louis49/androidtv-remote",
+  "homepage": "https://github.com/vricosti/react-native-androidtv-remote",
   "bugs": {
-    "url": "https://github.com/louis49/androidtv-remote/issues"
+    "url": "https://github.com/vricosti/react-native-androidtv-remote/issues"
   }
 }

@@ -2,8 +2,6 @@ import {PairingMessageManager} from "./PairingMessageManager.js";
 import forge from 'node-forge';
 import {Buffer} from "buffer";
 import EventEmitter from "events";
-import * as jsEnv from "../utils/utils.js";
-//import {Socket as RNTls} from 'react-native-tls';
 import TcpSockets from 'react-native-tcp-socket';
 
 
@@ -19,12 +17,14 @@ class PairingManager extends EventEmitter {
         this.pairingMessageManager = new PairingMessageManager(systeminfo);
     }
 
-    sendCode(code){
+    async sendCode(code){
         console.debug("Sending code : ", code);
         let code_bytes = this.hexStringToBytes(code);
 
-        let client_certificate = this.client.getCertificate();
-        let server_certificate = this.client.getPeerCertificate();
+        let client_certificate = await this.client.getCertificate();
+        console.log('getCertificate(): ', client_certificate);
+        let server_certificate = await this.client.getPeerCertificate();
+        console.log('getPeerCertificate(): ', server_certificate);
 
         let sha256 = forge.md.sha256.create();
 
@@ -49,27 +49,25 @@ class PairingManager extends EventEmitter {
 
     async start() {
         return new Promise((resolve, reject) => {
+  
             let options = {
                 port: this.port,
                 host : this.host,
                 key: this.certs.key,
                 cert: this.certs.cert,
-                rejectUnauthorized: false, // if true you can uncomment ca
-                 //ca: require('../../../../servercert.pem'),
+                rejectUnauthorized: false, // if true => use ca
+                // Specific to react-native-tcp-socket (patched)
+                androidKeyStore: this.certs.androidKeyStore,
+                certAlias: this.certs.certAlias,
+                keyAlias: this.certs.keyAlias,
+                //ca: require('../../../../client-selfsigned.crt'),
+                //caKey: require('../../../../client-selfsigned.key'),
             };
             
-            if (jsEnv.isNodeOrDeno) {
-                console.debug('set options to use node:tls');
-                this.client = tls.connect(options, () => {
-                    console.debug(this.host + " Pairing connected");
-                });
 
-            } else if (jsEnv.isReactNative) {
-                console.debug('set options to use react-native-tcp-socket');
-                this.client = TcpSockets.connectTLS(options, () => {
-                    console.debug(this.host + " Pairing connected");
-                });
-            }
+            this.client = TcpSockets.connectTLS(options, () => {
+                console.debug(this.host + " Pairing connected");
+            });
 
             this.client.pairingManager = this;
 

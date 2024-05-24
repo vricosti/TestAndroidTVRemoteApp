@@ -67,9 +67,9 @@ async function setup() {
 
     let androidRemote = new AndroidRemote(host, options);
 
-    androidRemote.on('secret', () => {
+    androidRemote.on('secret', async () => {
         line.question("Code : ", async (code) => {
-            androidRemote.sendCode(code);
+            await androidRemote.sendCode(code);
         });
     });
 
