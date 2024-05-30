@@ -7,7 +7,7 @@
 
 import React, { useState, useEffect, useRef } from 'react';
 import { View, Text, TextInput, Button, Alert } from 'react-native';
-import { AndroidRemote, RemoteKeyCode, RemoteDirection } from './packages/react-native-androidtv-remote/src';
+import { AndroidRemote, RemoteKeyCode, RemoteDirection } from 'react-native-androidtv-remote';
 
 function App(): React.JSX.Element {
     console.log('Entering App()');
@@ -47,7 +47,7 @@ function App(): React.JSX.Element {
             androidRemoteRef.current = androidRemote;
 
             console.log('After instantiating AndroidRemote');
-
+            
             androidRemoteRef.current.on('secret', () => {
                 Alert.alert("Pairing Required", "Enter the code shown on your TV.");
                 setConnectionStatus('Pairing Needed');
@@ -67,12 +67,12 @@ function App(): React.JSX.Element {
                 Alert.alert("Unpaired", "The device has been unpaired.");
             });
 
-
+            
             console.log('Before start()');
             androidRemoteRef.current.start().catch((error: Error) => {
                 Alert.alert("Connection Error", error.message);
             });
-        }
+        } 
         
         return () => { 
             if (androidRemoteRef.current) {
