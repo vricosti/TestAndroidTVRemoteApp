@@ -22,9 +22,7 @@ class PairingManager extends EventEmitter {
         let code_bytes = this.hexStringToBytes(code);
 
         let client_certificate = await this.client.getCertificate();
-        console.log('getCertificate(): ', client_certificate);
         let server_certificate = await this.client.getPeerCertificate();
-        console.log('getPeerCertificate(): ', server_certificate);
 
         let sha256 = forge.md.sha256.create();
 
@@ -60,8 +58,6 @@ class PairingManager extends EventEmitter {
                 androidKeyStore: this.certs.androidKeyStore,
                 certAlias: this.certs.certAlias,
                 keyAlias: this.certs.keyAlias,
-                //ca: require('../../../../client-selfsigned.crt'),
-                //caKey: require('../../../../client-selfsigned.key'),
             };
             
 

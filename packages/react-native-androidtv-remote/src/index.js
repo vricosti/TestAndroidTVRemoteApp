@@ -40,14 +40,12 @@ export class AndroidRemote extends EventEmitter {
             this.cert.certAlias = certAlias;
             this.cert.keyAlias = keyAlias;
 
-            console.log('before new PairingManager');
             this.pairingManager = new PairingManager(
                 this.host, 
                 this.pairing_port, 
                 this.cert, 
                 this.service_name, 
                 this.systeminfo);
-            console.log('after new PairingManager');
 
             this.pairingManager.on('secret', () => this.emit('secret'));
 
@@ -79,6 +77,10 @@ export class AndroidRemote extends EventEmitter {
         });
 
         return started;
+    }
+
+    initCertificate(certs) {
+        
     }
 
     sendCode(code){
