@@ -4,6 +4,21 @@ This project aims to port **androidtv-remote** to react-native.
 First steps includes to remove all specific node dependencies and use **react-native-modpow**.  
 So instead of using the standard **androidtv-remote**, there is my patched version inside the packages folder.  
 
+
+# DEPRECATED:  I SOLVED THE ISSUE  
+
+Now I have an issue with the TLS connection and self-signed certificate:  
+[https://stackoverflow.com/questions/2012497/accepting-https-connections-with-self-signed-certificates](https://stackoverflow.com/questions/2012497/accepting-https-connections-with-self-signed-certificates)  
+[https://stackoverflow.com/questions/1217141/self-signed-ssl-acceptance-on-android](https://stackoverflow.com/questions/1217141/self-signed-ssl-acceptance-on-android)  
+[https://socketio.github.io/socket.io-client-java/initialization.html#SSL_connections](https://socketio.github.io/socket.io-client-java/initialization.html#SSL_connections)  
+[https://github.com/socketio/socket.io-client-java/issues/293](https://github.com/socketio/socket.io-client-java/issues/293)  
+  
+
+[https://www.guardsquare.com/blog/how-to-securely-implement-tls-certificate-checking-in-android-apps](https://www.guardsquare.com/blog/how-to-securely-implement-tls-certificate-checking-in-android-apps)  
+[https://medium.com/@mohamed.ma872/simplifying-ssl-certificate-integration-in-android-apps-a-practical-guide-5bb648313e70](https://medium.com/@mohamed.ma872/simplifying-ssl-certificate-integration-in-android-apps-a-practical-guide-5bb648313e70)  
+[https://www.yoctopuce.com/FR/article/utiliser-tls-ssl-avec-notre-librairie-android](https://www.yoctopuce.com/FR/article/utiliser-tls-ssl-avec-notre-librairie-android)  
+
+
 // react-native-tcp
 server_certificate: {
     "bits": 2048,
@@ -49,21 +64,7 @@ server_certificate:  {
   fingerprint512: '05:7A:9F:C0:AD:DB:B9:3F:C1:39:E5:05:2F:08:40:58:47:30:40:69:27:1F:16:C9:F6:01:5C:D4:8D:E6:46:09:F4:3C:35:B3:5E:C2:99:6D:01:3C:62:FB:0A:D9:40:5B:8A:73:77:03:6B:D0:03:FB:5C:A9:27:C8:38:57:64:3E',
   serialNumber: '01773AA71FED',
   ```
-
-# DEPRECATED:  I SOLVED THE ISSUE  
-
-Now I have an issue with the TLS connection and self-signed certificate:  
-[https://stackoverflow.com/questions/2012497/accepting-https-connections-with-self-signed-certificates](https://stackoverflow.com/questions/2012497/accepting-https-connections-with-self-signed-certificates)  
-[https://stackoverflow.com/questions/1217141/self-signed-ssl-acceptance-on-android](https://stackoverflow.com/questions/1217141/self-signed-ssl-acceptance-on-android)  
-[https://socketio.github.io/socket.io-client-java/initialization.html#SSL_connections](https://socketio.github.io/socket.io-client-java/initialization.html#SSL_connections)  
-[https://github.com/socketio/socket.io-client-java/issues/293](https://github.com/socketio/socket.io-client-java/issues/293)  
   
-
-[https://www.guardsquare.com/blog/how-to-securely-implement-tls-certificate-checking-in-android-apps](https://www.guardsquare.com/blog/how-to-securely-implement-tls-certificate-checking-in-android-apps)  
-[https://medium.com/@mohamed.ma872/simplifying-ssl-certificate-integration-in-android-apps-a-practical-guide-5bb648313e70](https://medium.com/@mohamed.ma872/simplifying-ssl-certificate-integration-in-android-apps-a-practical-guide-5bb648313e70)  
-[https://www.yoctopuce.com/FR/article/utiliser-tls-ssl-avec-notre-librairie-android](https://www.yoctopuce.com/FR/article/utiliser-tls-ssl-avec-notre-librairie-android)  
-
-
 ```
 openssl s_client -state -connect 192.168.1.102:6467
 CONNECTED(00000003)
