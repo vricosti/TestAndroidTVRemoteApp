@@ -5,6 +5,11 @@ First steps includes to remove all specific node dependencies and use **react-na
 So instead of using the standard **androidtv-remote**, there is my patched version inside the packages folder.  
 
 
+# DEPENDENCY BUG!!!!
+
+
+
+
 # DEPRECATED:  I SOLVED THE ISSUE  
 
 Now I have an issue with the TLS connection and self-signed certificate:  
@@ -64,7 +69,7 @@ server_certificate:  {
   fingerprint512: '05:7A:9F:C0:AD:DB:B9:3F:C1:39:E5:05:2F:08:40:58:47:30:40:69:27:1F:16:C9:F6:01:5C:D4:8D:E6:46:09:F4:3C:35:B3:5E:C2:99:6D:01:3C:62:FB:0A:D9:40:5B:8A:73:77:03:6B:D0:03:FB:5C:A9:27:C8:38:57:64:3E',
   serialNumber: '01773AA71FED',
   ```
-  
+
 ```
 openssl s_client -state -connect 192.168.1.102:6467
 CONNECTED(00000003)
