@@ -4,10 +4,10 @@
   "description": "Port of AndroidTV Remote to react native",
   "main": "src/index.js",
   "files": [
-		"dist",
-		"example",
+    "dist",
+    "example",
     "src"
-	],
+  ],
   "engines": {
     "node": ">=14.18.1"
   },

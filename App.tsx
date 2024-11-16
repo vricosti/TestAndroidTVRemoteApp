@@ -6,22 +6,29 @@
  */
 
 import React, { useState, useEffect, useRef } from 'react';
-import { View, Text, TextInput, Button, Alert } from 'react-native';
+import { View, Text, TextInput, Button, Alert, StyleSheet } from 'react-native';
 import { AndroidRemote, RemoteKeyCode, RemoteDirection } from 'react-native-androidtv-remote';
 
 function App(): React.JSX.Element {
     console.log('Entering App()');
 
     const [code, setCode] = useState('');
+    const [serverAddress, setServerAddress] = useState('192.168.1.102');
     const [connectionStatus, setConnectionStatus] = useState('Disconnected');
     const androidRemoteRef = useRef<AndroidRemote | null>(null);
 
     useEffect(() => {
-        
-      console.log('Entering App.useEffect()');
-      
-        // My androidtv device has ip 192.168.1.102 (android-2.local)
-        const host = "192.168.1.102";
+        return () => {
+            if (androidRemoteRef.current) {
+                androidRemoteRef.current.stop();
+            }
+        };
+    }, []);
+
+    const handleConnect = () => {
+        console.log('Connecting to:', serverAddress);
+
+        const host = serverAddress;
         const options = {
             pairing_port: 6467,
             remote_port: 6466,
@@ -30,7 +37,6 @@ function App(): React.JSX.Element {
                 manufacturer: 'default-manufacturer',
                 model: 'default-model'
             },
-            // Mandatory for the connection to work on android
             cert: {
                 key: null,
                 cert: null,
@@ -67,20 +73,12 @@ function App(): React.JSX.Element {
                 Alert.alert("Unpaired", "The device has been unpaired.");
             });
 
-            
             console.log('Before start()');
             androidRemoteRef.current.start().catch((error: Error) => {
                 Alert.alert("Connection Error", error.message);
             });
-        } 
-        
-        return () => { 
-            if (androidRemoteRef.current) {
-                androidRemoteRef.current.stop();
-            }
-        }; 
-
-    }, []);
+        }
+    };
 
     const handlePairingCodeSubmit = () => {
         console.log('handlePairingCodeSubmit: ', code);
@@ -93,8 +91,8 @@ function App(): React.JSX.Element {
     };
 
     const handleCommandSend = (cmd) => {
-      if (!androidRemoteRef.current)
-        return;
+        if (!androidRemoteRef.current)
+            return;
 
         if (cmd in RemoteKeyCode) {
             androidRemoteRef.current.sendKey(RemoteKeyCode[cmd], RemoteDirection.SHORT);
@@ -106,6 +104,15 @@ function App(): React.JSX.Element {
     return (
         <View style={{ padding: 20 }}>
             <Text>Status: {connectionStatus}</Text>
+            <View style={styles.serverAddressContainer}>
+                <TextInput
+                    placeholder="Enter Server Address"
+                    value={serverAddress}
+                    onChangeText={setServerAddress}
+                    style={styles.serverAddressInput}
+                />
+                <Button title="Connect" onPress={handleConnect} />
+            </View>
             <TextInput
                 placeholder="Enter Pairing Code"
                 value={code}
@@ -114,11 +121,25 @@ function App(): React.JSX.Element {
             />
             <Button title="Submit Pairing Code" onPress={handlePairingCodeSubmit} />
             <View style={{ height: 10 }} />
-            {/* You can expand below for more buttons for different commands */}
             <Button title="Mute" onPress={() => handleCommandSend('KEYCODE_MUTE')} />
             <View style={{ height: 10 }} />
         </View>
     );
 }
+
+const styles = StyleSheet.create({
+    serverAddressContainer: {
+        flexDirection: 'row',
+        alignItems: 'center',
+        marginBottom: 10,
+    },
+    serverAddressInput: {
+        flex: 1,
+        height: 40,
+        borderColor: 'gray',
+        borderWidth: 1,
+        marginRight: 10,
+    },
+});
 
 export default App;

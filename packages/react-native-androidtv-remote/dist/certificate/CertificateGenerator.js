@@ -33,15 +33,23 @@ class CertificateGenerator {
     var attributes = [{
       name: 'commonName',
       value: name
-    }
-    // {name: 'countryName', value: country},
-    // {shortName: 'ST', value: state},
-    // {name: 'localityName', value: locality},
-    // {name: 'organizationName', value: organisation},
-    // {shortName: 'OU', value: OU}
-    ];
+    }, {
+      name: 'countryName',
+      value: 'CNT'
+    }, {
+      shortName: 'ST',
+      value: 'ST'
+    }, {
+      name: 'localityName',
+      value: 'LOC'
+    }, {
+      name: 'organizationName',
+      value: 'O'
+    }, {
+      shortName: 'OU',
+      value: 'OU'
+    }];
     cert.setSubject(attributes);
-    cert.setIssuer(attributes);
     cert.sign(keys.privateKey, _nodeForge.default.md.sha256.create());
     console.debug('Exiting generateFull');
     return {
