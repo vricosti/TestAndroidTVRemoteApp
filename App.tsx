@@ -6,7 +6,7 @@
  */
 
 import React, { useState, useEffect, useRef } from 'react';
-import { View, Text, TextInput, Button, Alert, StyleSheet } from 'react-native';
+import { View, Text, TextInput, Button, Alert, StyleSheet, SafeAreaView } from 'react-native';
 import { AndroidRemote, RemoteKeyCode, RemoteDirection } from 'react-native-androidtv-remote';
 
 function App(): React.JSX.Element {
@@ -102,7 +102,7 @@ function App(): React.JSX.Element {
     };
 
     return (
-        <View style={{ padding: 20 }}>
+        <SafeAreaView style={styles.container}>
             <Text>Status: {connectionStatus}</Text>
             <View style={styles.serverAddressContainer}>
                 <TextInput
@@ -123,11 +123,16 @@ function App(): React.JSX.Element {
             <View style={{ height: 10 }} />
             <Button title="Mute" onPress={() => handleCommandSend('KEYCODE_MUTE')} />
             <View style={{ height: 10 }} />
-        </View>
+        </SafeAreaView>
     );
 }
 
 const styles = StyleSheet.create({
+    container: {
+        flex: 1,
+        padding: 20,
+        margin: 10
+    },
     serverAddressContainer: {
         flexDirection: 'row',
         alignItems: 'center',

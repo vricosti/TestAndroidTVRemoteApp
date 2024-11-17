@@ -5,7 +5,10 @@ First steps includes to remove all specific node dependencies and use **react-na
 So instead of using the standard **androidtv-remote**, there is my patched version inside the packages folder.  
 
 
-# DEPENDENCY BUG!!!!
+# On IOS
+
+Check that your iPhone has developer mode enabled: on an iOS or visionOS device, open Settings > Privacy & Security, scroll down to the Developer Mode.   
+
 
 
 
