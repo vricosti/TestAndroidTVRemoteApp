@@ -8168,14 +8168,14 @@ __metadata:
 
 "react-native-androidtv-remote@file:./packages/react-native-androidtv-remote/::locator=TestAndroidTVRemoteApp%40workspace%3A.":
   version: 1.0.0
-  resolution: "react-native-androidtv-remote@file:./packages/react-native-androidtv-remote/#./packages/react-native-androidtv-remote/::hash=d59769&locator=TestAndroidTVRemoteApp%40workspace%3A."
+  resolution: "react-native-androidtv-remote@file:./packages/react-native-androidtv-remote/#./packages/react-native-androidtv-remote/::hash=85360b&locator=TestAndroidTVRemoteApp%40workspace%3A."
   dependencies:
     node-forge: ^1.3.1
     protobufjs: ^7.3.0
   peerDependencies:
     react-native: ">=0.60.0"
     react-native-modpow: ^1.1.0
-  checksum: 70ce4520ac472ff75f291ffb3d402f937e8f37b42f29e2d65d48adb5250b582235f44ed0d11176f7a56065e3c62189355b92cea66306b43ffa51eb151b96e203
+  checksum: 40958e3bc089d96e208c481c028bad7cb13bccc2db85677e0ed4fc83940991f307364bb939f6d9253c7872cbd883a0617d572557fda6593da5377c56e96c97df
   languageName: node
   linkType: hard
 

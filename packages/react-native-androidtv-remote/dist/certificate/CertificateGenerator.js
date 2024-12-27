@@ -57,8 +57,5 @@ class CertificateGenerator {
       key: _nodeForge.default.pki.privateKeyToPem(keys.privateKey)
     };
   }
-  static initClientCertificate() {
-    console.debug('initClientCertificate');
-  }
 }
 exports.CertificateGenerator = CertificateGenerator;

@@ -33,6 +33,8 @@ class PairingManager extends _events.default {
       var code_bytes = _this.hexStringToBytes(code);
       var client_certificate = yield _this.client.getCertificate();
       var server_certificate = yield _this.client.getPeerCertificate();
+      //console.debug(`client_certificate: ${JSON.stringify(client_certificate, null, 2)}`);
+      //console.debug(`server_certificate: ${JSON.stringify(server_certificate, null, 2)}`);
       var sha256 = _nodeForge.default.md.sha256.create();
       sha256.update(_nodeForge.default.util.hexToBytes(client_certificate.modulus), 'raw');
       sha256.update(_nodeForge.default.util.hexToBytes("0" + client_certificate.exponent.slice(2)), 'raw');

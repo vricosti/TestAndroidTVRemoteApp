@@ -23,7 +23,8 @@ class PairingManager extends EventEmitter {
 
         let client_certificate = await this.client.getCertificate();
         let server_certificate = await this.client.getPeerCertificate();
-
+        //console.debug(`client_certificate: ${JSON.stringify(client_certificate, null, 2)}`);
+        //console.debug(`server_certificate: ${JSON.stringify(server_certificate, null, 2)}`);
         let sha256 = forge.md.sha256.create();
 
         sha256.update(forge.util.hexToBytes(client_certificate.modulus), 'raw');
