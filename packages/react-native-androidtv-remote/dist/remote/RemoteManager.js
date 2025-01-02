@@ -30,13 +30,14 @@ class RemoteManager extends _events.default {
         var options = {
           port: _this.port,
           host: _this.host,
-          key: _this.certs.key,
-          cert: _this.certs.cert,
-          rejectUnauthorized: false,
+          ca: _this.certs.ca,
+          //key: this.certs.key,
+          //cert: this.certs.cert,
+          rejectUnauthorized: false
           // Specific to react-native-tcp-socket (patched)
-          androidKeyStore: _this.certs.androidKeyStore,
-          certAlias: _this.certs.certAlias,
-          keyAlias: _this.certs.keyAlias
+          //androidKeyStore: this.certs.androidKeyStore,
+          //certAlias: this.certs.certAlias,
+          //keyAlias: this.certs.keyAlias,
           //ca: require('../../../../client-selfsigned.crt'),
         };
         console.debug("Start Remote Connect");

@@ -11,11 +11,12 @@ export class AndroidRemote extends EventEmitter {
         super();
         this.host = host
         this.cert = {
-            key:options.cert?.key,
-            cert:options.cert?.cert,
-            androidKeyStore: options.cert?.androidKeyStore ? options.cert?.androidKeyStore : '',
-            certAlias: options.cert?.certAlias ? options.cert?.certAlias : '',
-            keyAlias: options.cert?.keyAlias ? options.cert?.keyAlias : '',
+            key: options.cert?.key,
+            cert: options.cert?.cert,
+            ca: options.cert?.ca,
+            //androidKeyStore: options.cert?.androidKeyStore ? options.cert?.androidKeyStore : '',
+            //certAlias: options.cert?.certAlias ? options.cert?.certAlias : '',
+            //keyAlias: options.cert?.keyAlias ? options.cert?.keyAlias : '',
         };
         this.pairing_port = options.pairing_port?options.pairing_port:6467;
         this.remote_port = options.remote_port?options.remote_port:6466;
@@ -29,16 +30,16 @@ export class AndroidRemote extends EventEmitter {
     async start() {
 
         console.log('AndroidRemote.start');
-        if (!this.cert.key || !this.cert.cert) {
+        //if (!this.cert.key || !this.cert.cert) {
             //console.log('before CertificateGenerator.generateFull');
             
-            let androidKeyStore = this.cert.androidKeyStore;
-            let certAlias = this.cert.certAlias;
-            let keyAlias = this.cert.keyAlias;
-            this.cert = CertificateGenerator.generateFull(this.service_name);
-            this.cert.androidKeyStore = androidKeyStore;
-            this.cert.certAlias = certAlias;
-            this.cert.keyAlias = keyAlias;
+            //let androidKeyStore = this.cert.androidKeyStore;
+            //let certAlias = this.cert.certAlias;
+            //let keyAlias = this.cert.keyAlias;
+            //this.cert = CertificateGenerator.generateFull(this.service_name);
+            //this.cert.androidKeyStore = androidKeyStore;
+            //this.cert.certAlias = certAlias;
+            //this.cert.keyAlias = keyAlias;
 
             this.pairingManager = new PairingManager(
                 this.host, 
@@ -56,7 +57,7 @@ export class AndroidRemote extends EventEmitter {
             if (!paired) {
                 return;
             }
-        }
+        //}
 
         this.remoteManager = new RemoteManager(this.host, this.remote_port, this.cert, this.systeminfo);
 

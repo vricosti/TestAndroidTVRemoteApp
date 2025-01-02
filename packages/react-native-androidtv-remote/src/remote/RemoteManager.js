@@ -20,14 +20,15 @@ class RemoteManager extends EventEmitter {
 
             let options = {
                 port: this.port,
-                host : this.host,
-                key: this.certs.key,
-                cert: this.certs.cert,
+                host: this.host,
+                ca: this.certs.ca,
+                //key: this.certs.key,
+                //cert: this.certs.cert,
                 rejectUnauthorized: false,
                 // Specific to react-native-tcp-socket (patched)
-                androidKeyStore: this.certs.androidKeyStore,
-                certAlias: this.certs.certAlias,
-                keyAlias: this.certs.keyAlias,
+                //androidKeyStore: this.certs.androidKeyStore,
+                //certAlias: this.certs.certAlias,
+                //keyAlias: this.certs.keyAlias,
                 //ca: require('../../../../client-selfsigned.crt'),
             };
             
