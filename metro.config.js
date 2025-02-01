@@ -12,7 +12,7 @@ const config = {
     resolver: {
         assetExts: [...defaultConfig.resolver.assetExts, 'pem', 'p12', 'crt', 'key'],
         extraNodeModules: {
-            'react-native-androidtv-remote': path.resolve(__dirname, 'packages/react-native-androidtv-remote'),
+            //'react-native-androidtv-remote': path.resolve(__dirname, 'packages/react-native-androidtv-remote'),
             //'tls': path.resolve(__dirname, 'node_modules/react-native-tcp-socket'),
             //'react-native-tls': path.resolve(__dirname, 'packages/react-native-tls'),
         },

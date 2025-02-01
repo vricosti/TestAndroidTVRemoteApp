@@ -21,7 +21,6 @@
     "protobufjs": "^7.3.0",
     "react": "18.2.0",
     "react-native": "0.74.1",
-    "react-native-androidtv-remote": "./packages/react-native-androidtv-remote/",
     "react-native-modpow": "^1.1.0",
     "react-native-tcp-socket": "^6.2.0",
     "stream-browserify": "^3.0.0",
