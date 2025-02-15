@@ -89,7 +89,7 @@ function App(): React.JSX.Element {
             });
 
             androidRemoteRef.current.on('ready', () => {
-                // Store the certificate before sending code, regardless of pairing success
+                // Store the certificate once pairing has succeeded
                 const cert = androidRemoteRef.current?.getCertificate();
                 if (cert && cert.key && cert.cert && !certificateRef.current) {
                     certificateRef.current = cert;
@@ -112,12 +112,6 @@ function App(): React.JSX.Element {
             console.log('Before start()');
             androidRemoteRef.current.start().then(() => {
             }).catch((error: Error) => {
-                Alert.alert("Connection Error", error.message);
-            });
-        } else {
-            console.log(`A connection is already in progress... ${androidRemoteRef.current}`);
-            //androidRemoteRef.current.stop();
-            androidRemoteRef.current.start().catch((error: Error) => {
                 Alert.alert("Connection Error", error.message);
             });
         }
