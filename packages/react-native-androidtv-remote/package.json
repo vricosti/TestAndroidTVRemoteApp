@@ -12,7 +12,7 @@
     "node": ">=14.18.1"
   },
   "scripts": {
-    "babel": "babel ./src/*.* --out-dir dist --delete-dir-on-start -D && babel ./src/certificate/*.* --out-dir dist/certificate -D && babel ./src/pairing/*.* --out-dir dist/pairing -D && babel ./src/remote/*.* --out-dir dist/remote -D && babel ./src/utils/*.* --out-dir dist/utils -D"
+    "babel": "babel ./src/*.* --out-dir dist --delete-dir-on-start -D && babel ./src/certificate/*.* --out-dir dist/certificate -D && babel ./src/pairing/*.* --out-dir dist/pairing -D && babel ./src/remote/*.* --out-dir dist/remote -D"
   },
   "keywords": [
     "androidtv",

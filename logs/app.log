@@ -1,0 +1,112 @@
+android:
+ LOG  Connecting to: 192.168.1.102
+ LOG  Before instantiating AndroidRemote
+ LOG  AndroidRemote.constructor
+ LOG  After instantiating AndroidRemote
+ LOG  Before start()
+ LOG  AndroidRemote.start()
+ LOG  key or cert is null
+ LOG  Entering generateFull(com.lotalogic.lota-remotectl)
+ LOG  modPow:  [Function nonPromiseMethodWrapper]
+ DEBUG  Exiting generateFull
+ LOG  PairingMessageManager.constructor
+ DEBUG  PairingManager.start(): before connectTLS
+ DEBUG  192.168.1.102 Pairing connected
+ DEBUG  192.168.1.102 Pairing secure connected
+ LOG  PairingMessageManager.createPairingRequest
+ LOG  PairingMessageManager.create
+ LOG  PairingMessageManager.parse
+ DEBUG  Receive : 7,8,2,16,200,1,90,0
+ DEBUG  Receive : {"protocolVersion":2,"status":"STATUS_OK","pairingRequestAck":{}}
+ LOG  PairingMessageManager.createPairingOption
+ LOG  PairingMessageManager.create
+ LOG  PairingMessageManager.parse
+ DEBUG  Receive : 16,8,2,16,200,1,162,1,8,18,4,8,3,16,6,24,1
+ DEBUG  Receive : {"protocolVersion":2,"status":"STATUS_OK","pairingOption":{"outputEncodings":[{"type":"ENCODING_TYPE_HEXADECIMAL","symbolLength":6}],"preferredRole":"ROLE_TYPE_INPUT"}}
+ LOG  PairingMessageManager.create
+ LOG  PairingMessageManager.parse
+ DEBUG  Receive : 8,8,2,16,200,1,250,1,0
+ DEBUG  Receive : {"protocolVersion":2,"status":"STATUS_OK","pairingConfigurationAck":{}}
+ LOG  handlePairingCodeSubmit:  14CD40
+ LOG  androidRemote.sendCode(code):  14CD40
+ DEBUG  Sending code :  14CD40
+ DEBUG  Code validated, sending pairing secret
+ LOG  PairingMessageManager.create
+ LOG  PairingMessageManager.parse
+ DEBUG  Receive : 42,8,2,16,200,1,202,2,34,10,32,20,171,113,97,226,36,194,243,228,144,191,82,17,58,37,32,202,155,252,79,14,82,109,172,12,98,109,52,72,20,88,91
+ DEBUG  Receive : {"protocolVersion":2,"status":"STATUS_OK","pairingSecretAck":{"secret":"FKtxYeIkwvPkkL9SETolIMqb/E8OUm2sDGJtNEgUWFs="}}
+ DEBUG  192.168.1.102 Paired!
+ DEBUG  192.168.1.102 Pairing Connection closed undefined
+ LOG  PairingManager.close() success
+ DEBUG  Start Remote Connect
+ DEBUG  RemoteManager.start(): before connectTLS
+ DEBUG  Remote connected
+ DEBUG  192.168.1.102 Remote secureConnect
+ DEBUG  192.168.1.102 Receive : {"remoteConfigure":{"code1":639,"deviceInfo":{"model":"Freebox Player Mini v2","vendor":"Freebox","unknown1":1,"unknown2":"7.1.1","packageName":"com.google.android.tv.remote.service","appVersion":"6.1.683155326"}}}
+ DEBUG  Create Remote {"remoteConfigure":{"code1":622,"deviceInfo":{"model":"default-model","vendor":"default-manufacturer","unknown1":1,"unknown2":"1","packageName":"androidtv-remote","appVersion":"1.0.0"}}}
+ DEBUG  Sending {"remoteConfigure":{"code1":622,"deviceInfo":{"model":"default-model","vendor":"default-manufacturer","unknown1":1,"unknown2":"1","packageName":"androidtv-remote","appVersion":"1.0.0"}}}
+ DEBUG  192.168.1.102 Receive : {"remoteSetActive":{}}
+ DEBUG  Create Remote {"remoteSetActive":{"active":622}}
+ DEBUG  Sending {"remoteSetActive":{"active":622}}
+ DEBUG  192.168.1.102 Receive : {"remoteSetVolumeLevel":{"unknown1":11,"unknown2":9,"playerModel":"Freebox Player Mini v2","unknown4":1}}
+ DEBUG  192.168.1.102 Receive : {"remoteStart":{"started":true}}
+ DEBUG  192.168.1.102 Receive : {"remoteImeKeyInject":{"appInfo":{"appPackage":"com.google.android.leanbacklauncher"}}}
+ -------
+ iOS:
+
+ LOG  Connecting to: 192.168.1.102
+ LOG  Before instantiating AndroidRemote
+ LOG  AndroidRemote.constructor
+ LOG  After instantiating AndroidRemote
+ LOG  Before start()
+ LOG  AndroidRemote.start()
+ LOG  key or cert is null
+ LOG  Entering generateFull(com.lotalogic.lota-remotectl)
+ LOG  modPow:  [Function nonPromiseMethodWrapper]
+ DEBUG  Exiting generateFull
+ LOG  PairingMessageManager.constructor
+ DEBUG  PairingManager.start(): before connectTLS
+ WARN  createIdentity: Starting identity creation
+ WARN  createIdentity: Successfully found identity
+ DEBUG  192.168.1.102 Pairing connected
+ DEBUG  192.168.1.102 Pairing secure connected
+ LOG  PairingMessageManager.createPairingRequest
+ LOG  PairingMessageManager.create
+ LOG  PairingMessageManager.parse
+ DEBUG  Receive : 7,8,2,16,200,1,90,0
+ DEBUG  Receive : {"protocolVersion":2,"status":"STATUS_OK","pairingRequestAck":{}}
+ LOG  PairingMessageManager.createPairingOption
+ LOG  PairingMessageManager.create
+ LOG  PairingMessageManager.parse
+ DEBUG  Receive : 16,8,2,16,200,1,162,1,8,18,4,8,3,16,6,24,1
+ DEBUG  Receive : {"protocolVersion":2,"status":"STATUS_OK","pairingOption":{"outputEncodings":[{"type":"ENCODING_TYPE_HEXADECIMAL","symbolLength":6}],"preferredRole":"ROLE_TYPE_INPUT"}}
+ LOG  PairingMessageManager.create
+ LOG  PairingMessageManager.parse
+ DEBUG  Receive : 8,8,2,16,200,1,250,1,0
+ DEBUG  Receive : {"protocolVersion":2,"status":"STATUS_OK","pairingConfigurationAck":{}}
+ LOG  handlePairingCodeSubmit:  1927E0
+ LOG  androidRemote.sendCode(code):  1927E0
+ DEBUG  Sending code :  1927E0
+ DEBUG  Code validated, sending pairing secret
+ LOG  PairingMessageManager.create
+ LOG  PairingMessageManager.parse
+ DEBUG  Receive : 42,8,2,16,200,1,202,2,34,10,32,25,248,81,31,173,143,231,127,156,75,130,107,89,225,98,188,205,118,148,207,232,66,40,17,43,228,123,82,235,180,75,139
+ DEBUG  Receive : {"protocolVersion":2,"status":"STATUS_OK","pairingSecretAck":{"secret":"GfhRH62P53+cS4JrWeFivM12lM/oQigRK+R7Uuu0S4s="}}
+ DEBUG  192.168.1.102 Paired!
+ DEBUG  192.168.1.102 Pairing Connection closed undefined
+ LOG  PairingManager.close() success
+ DEBUG  Start Remote Connect
+ DEBUG  RemoteManager.start(): before connectTLS
+ WARN  createIdentity: Starting identity creation
+ DEBUG  Remote connected
+ DEBUG  192.168.1.102 Remote secureConnect
+ WARN  createIdentity: Successfully found identity
+ DEBUG  timeout
+ INFO  192.168.1.102 Remote Connection closed  undefined
+ LOG  RemoteManager.close() no error => start again
+ DEBUG  Start Remote Connect
+ DEBUG  RemoteManager.start(): before connectTLS
+ WARN  createIdentity: Starting identity creation
+ DEBUG  Remote connected
+ DEBUG  192.168.1.102 Remote secureConnect
+ WARN  createIdentity: Successfully found identity

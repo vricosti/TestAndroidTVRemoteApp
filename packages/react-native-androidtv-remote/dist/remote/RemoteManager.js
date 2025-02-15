@@ -40,6 +40,8 @@ class RemoteManager extends _events.default {
           //ca: require('../../../../client-selfsigned.crt'),
         };
         console.debug("Start Remote Connect");
+
+        //console.debug('RemoteManager.start(): before connectTLS');
         _this.client = _reactNativeTcpSocket.default.connectTLS(options, () => {
           console.debug("Remote connected");
         });
@@ -94,7 +96,7 @@ class RemoteManager extends _events.default {
             } else if (message.remoteSetPreferredAudioDevice) {
               //console.debug("Receive SET PREFERRED AUDIO DEVICE" + message.remoteSetPreferredAudioDevice);
             } else if (message.remoteError) {
-              //console.debug("Receive REMOTE ERROR");
+              console.debug("Receive REMOTE ERROR");
               _this.emit('error', {
                 error: message.remoteError
               });
@@ -108,10 +110,13 @@ class RemoteManager extends _events.default {
           var _ref = _asyncToGenerator(function* (hasError) {
             console.info(_this.host + " Remote Connection closed ", hasError);
             if (hasError) {
+              console.log('RemoteManager.close() hasError');
               reject(_this.error.code);
               if (_this.error.code === "ECONNRESET") {
+                console.log('RemoteManager.close() hasError ECONNRESET');
                 _this.emit('unpaired');
               } else if (_this.error.code === "ECONNREFUSED") {
+                console.log('RemoteManager.close() hasError ECONNREFUSED');
                 // L'appareil n'est pas encore prêt : on relance
                 yield new Promise(resolve => setTimeout(resolve, 1000));
                 yield _this.start().catch(error => {
@@ -119,8 +124,10 @@ class RemoteManager extends _events.default {
                 });
               } else if (_this.error.code === "EHOSTDOWN") {
                 // L'appareil est down, on ne fait rien
+                console.log('RemoteManager.close() hasError EHOSTDOWN');
               } else {
                 // Dans le doute on redémarre
+                console.log('RemoteManager.close() unknown error => start again');
                 yield new Promise(resolve => setTimeout(resolve, 1000));
                 yield _this.start().catch(error => {
                   console.error(error);
@@ -128,6 +135,7 @@ class RemoteManager extends _events.default {
               }
             } else {
               // Si pas d'erreur on relance. Si elle s'est éteinte alors une erreur empéchera de relancer encore
+              console.log('RemoteManager.close() no error => start again');
               yield new Promise(resolve => setTimeout(resolve, 1000));
               yield _this.start().catch(error => {
                 console.error(error);

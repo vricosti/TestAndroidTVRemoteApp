@@ -24,38 +24,36 @@ export class AndroidRemote extends EventEmitter {
             manufacturer: "default manufacturer", 
             model: "default model"
         };
+        this.remoteManager = null;
+        this.pairingManager = null;
     }
 
     async start() {
 
-        console.log('AndroidRemote.start');
-        if (!this.cert.key || !this.cert.cert) {
-            //console.log('before CertificateGenerator.generateFull');
-            
-            let androidKeyStore = this.cert.androidKeyStore;
-            let certAlias = this.cert.certAlias;
-            let keyAlias = this.cert.keyAlias;
+        console.log('AndroidRemote.start()');
+        let androidKeyStore = this.cert.androidKeyStore;
+        let certAlias = this.cert.certAlias;
+        let keyAlias = this.cert.keyAlias;
+        if (!this.cert || !this.cert.key || !this.cert.cert) {
             this.cert = CertificateGenerator.generateFull(this.service_name);
-            this.cert.androidKeyStore = androidKeyStore;
-            this.cert.certAlias = certAlias;
-            this.cert.keyAlias = keyAlias;
+        }
+        this.cert.androidKeyStore = androidKeyStore;
+        this.cert.certAlias = certAlias;
+        this.cert.keyAlias = keyAlias;
 
-            this.pairingManager = new PairingManager(
-                this.host, 
-                this.pairing_port, 
-                this.cert, 
-                this.service_name, 
-                this.systeminfo);
-
-            this.pairingManager.on('secret', () => this.emit('secret'));
-
-            let paired = await this.pairingManager.start().catch((error) => {
-                console.error(error);
-            });
-
-            if (!paired) {
-                return;
-            }
+        this.pairingManager = new PairingManager(
+            this.host, 
+            this.pairing_port, 
+            this.cert, 
+            this.service_name, 
+            this.systeminfo);
+        this.pairingManager.on('secret', () => this.emit('secret'));
+        
+        let paired = await this.pairingManager.start().catch((error) => {
+            console.error(error);
+        });
+        if (!paired) {
+            return;
         }
 
         this.remoteManager = new RemoteManager(this.host, this.remote_port, this.cert, this.systeminfo);
@@ -83,20 +81,24 @@ export class AndroidRemote extends EventEmitter {
         
     }
 
-    sendCode(code){
-        return this.pairingManager.sendCode(code);
+    sendPairingCode(code){
+        return this.pairingManager?.sendCode(code);
+    }
+
+    cancelPairing(){
+        return this.pairingManager?.sendCode('');
     }
 
     sendPower(){
-        return this.remoteManager.sendPower();
+        return this.remoteManager?.sendPower();
     }
 
     sendAppLink(app_link){
-        return this.remoteManager.sendAppLink(app_link);
+        return this.remoteManager?.sendAppLink(app_link);
     }
 
     sendKey(key, direction){
-        return this.remoteManager.sendKey(key, direction);
+        return this.remoteManager?.sendKey(key, direction);
     }
 
     getCertificate(){
@@ -107,7 +109,7 @@ export class AndroidRemote extends EventEmitter {
     }
 
     stop(){
-        this.remoteManager.stop();
+        this.remoteManager?.stop();
     }
 }
 
