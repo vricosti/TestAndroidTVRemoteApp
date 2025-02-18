@@ -49,9 +49,7 @@ export class AndroidRemote extends EventEmitter {
             this.systeminfo);
         this.pairingManager.on('secret', () => this.emit('secret'));
         
-        let paired = await this.pairingManager.start().catch((error) => {
-            console.error(error);
-        });
+        let paired = await this.pairingManager.start();
         if (!paired) {
             return;
         }
@@ -86,7 +84,7 @@ export class AndroidRemote extends EventEmitter {
     }
 
     cancelPairing(){
-        return this.pairingManager?.sendCode('');
+        return this.pairingManager?.cancelPairing();
     }
 
     sendPower(){

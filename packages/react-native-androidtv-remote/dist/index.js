@@ -51,9 +51,7 @@ class AndroidRemote extends _events.default {
       _this.cert.keyAlias = keyAlias;
       _this.pairingManager = new _PairingManager.PairingManager(_this.host, _this.pairing_port, _this.cert, _this.service_name, _this.systeminfo);
       _this.pairingManager.on('secret', () => _this.emit('secret'));
-      var paired = yield _this.pairingManager.start().catch(error => {
-        console.error(error);
-      });
+      var paired = yield _this.pairingManager.start();
       if (!paired) {
         return;
       }
@@ -77,7 +75,7 @@ class AndroidRemote extends _events.default {
   }
   cancelPairing() {
     var _this$pairingManager2;
-    return (_this$pairingManager2 = this.pairingManager) === null || _this$pairingManager2 === void 0 ? void 0 : _this$pairingManager2.sendCode('');
+    return (_this$pairingManager2 = this.pairingManager) === null || _this$pairingManager2 === void 0 ? void 0 : _this$pairingManager2.cancelPairing();
   }
   sendPower() {
     var _this$remoteManager;

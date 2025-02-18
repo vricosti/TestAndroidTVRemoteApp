@@ -13,6 +13,7 @@ class RemoteManager extends EventEmitter {
         this.chunks = Buffer.from([]);
         this.error = null;
         this.remoteMessageManager = new RemoteMessageManager(systeminfo);
+        this.isManualStop = false;
     }
 
     async start() {
@@ -32,6 +33,7 @@ class RemoteManager extends EventEmitter {
             };
             
             console.debug("Start Remote Connect");
+            this.isManualStop = false;
             
             //console.debug('RemoteManager.start(): before connectTLS');
             this.client = TcpSockets.connectTLS(options, () => {
@@ -125,6 +127,14 @@ class RemoteManager extends EventEmitter {
 
             this.client.on('close', async (hasError) => {
                 console.info(this.host + " Remote Connection closed ", hasError);
+                
+                // Don't restart if it was manually stopped
+                if (this.isManualStop) {
+                    console.log('RemoteManager.close() after manual stop - not restarting');
+                    this.isManualStop = false; // Reset flag for future connections
+                    return;
+                }
+
                 if(hasError){
                     console.log('RemoteManager.close() hasError');
                     reject(this.error.code);
@@ -188,6 +198,7 @@ class RemoteManager extends EventEmitter {
     }
 
     stop(){
+        this.isManualStop = true;
         this.client.destroy();
     }
 }

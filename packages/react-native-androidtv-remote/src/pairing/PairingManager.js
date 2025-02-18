@@ -16,6 +16,7 @@ class PairingManager extends EventEmitter {
         this.certs = certs;
         this.service_name = service_name;
         this.pairingMessageManager = new PairingMessageManager(systeminfo);
+        this.isCancelled = false;
     }
 
     /*
@@ -76,6 +77,12 @@ class PairingManager extends EventEmitter {
         }
     }
 
+    cancelPairing() {
+        this.isCancelled = true;
+        this.client.destroy(new Error("Pairing canceled"));
+        return false;
+    }
+
     async start() {
         return new Promise((resolve, reject) => {
   
@@ -96,6 +103,7 @@ class PairingManager extends EventEmitter {
                 console.debug(this.host + " Pairing connected");
             });
 
+            this.isCancelled = false;
             this.client.pairingManager = this;
 
             this.client.on("secureConnect", () => {
@@ -140,9 +148,13 @@ class PairingManager extends EventEmitter {
             });
 
             this.client.on('close', (hasError) => {
-                console.debug(this.host + " Pairing Connection closed", hasError);
-                if(hasError){
+                if(hasError) {
                     console.log('PairingManager.close() failure');
+                    reject(false);
+                }
+                else if (this.isCancelled) {
+                    console.log('PairingManager.close() on cancelPairing()');
+                    this.isCancelled = false;
                     reject(false);
                 }
                 else{

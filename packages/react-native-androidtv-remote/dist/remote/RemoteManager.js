@@ -22,6 +22,7 @@ class RemoteManager extends _events.default {
     this.chunks = _buffer.Buffer.from([]);
     this.error = null;
     this.remoteMessageManager = new _RemoteMessageManager.RemoteMessageManager(systeminfo);
+    this.isManualStop = false;
   }
   start() {
     var _this = this;
@@ -40,6 +41,7 @@ class RemoteManager extends _events.default {
           //ca: require('../../../../client-selfsigned.crt'),
         };
         console.debug("Start Remote Connect");
+        _this.isManualStop = false;
 
         //console.debug('RemoteManager.start(): before connectTLS');
         _this.client = _reactNativeTcpSocket.default.connectTLS(options, () => {
@@ -109,6 +111,13 @@ class RemoteManager extends _events.default {
         _this.client.on('close', /*#__PURE__*/function () {
           var _ref = _asyncToGenerator(function* (hasError) {
             console.info(_this.host + " Remote Connection closed ", hasError);
+
+            // Don't restart if it was manually stopped
+            if (_this.isManualStop) {
+              console.log('RemoteManager.close() after manual stop - not restarting');
+              _this.isManualStop = false; // Reset flag for future connections
+              return;
+            }
             if (hasError) {
               console.log('RemoteManager.close() hasError');
               reject(_this.error.code);
@@ -163,6 +172,7 @@ class RemoteManager extends _events.default {
     this.client.write(this.remoteMessageManager.createRemoteRemoteAppLinkLaunchRequest(app_link));
   }
   stop() {
+    this.isManualStop = true;
     this.client.destroy();
   }
 }

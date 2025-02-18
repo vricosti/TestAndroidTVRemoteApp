@@ -27,6 +27,7 @@ class PairingManager extends _events.default {
     this.certs = certs;
     this.service_name = service_name;
     this.pairingMessageManager = new _PairingMessageManager.PairingMessageManager(systeminfo);
+    this.isCancelled = false;
   }
 
   /*
@@ -85,6 +86,11 @@ class PairingManager extends _events.default {
       }
     })();
   }
+  cancelPairing() {
+    this.isCancelled = true;
+    this.client.destroy(new Error("Pairing canceled"));
+    return false;
+  }
   start() {
     var _this2 = this;
     return _asyncToGenerator(function* () {
@@ -106,6 +112,7 @@ class PairingManager extends _events.default {
         _this2.client = _reactNativeTcpSocket.default.connectTLS(options, () => {
           console.debug(_this2.host + " Pairing connected");
         });
+        _this2.isCancelled = false;
         _this2.client.pairingManager = _this2;
         _this2.client.on("secureConnect", () => {
           console.debug(_this2.host + " Pairing secure connected ");
@@ -138,9 +145,12 @@ class PairingManager extends _events.default {
           }
         });
         _this2.client.on('close', hasError => {
-          console.debug(_this2.host + " Pairing Connection closed", hasError);
           if (hasError) {
             console.log('PairingManager.close() failure');
+            reject(false);
+          } else if (_this2.isCancelled) {
+            console.log('PairingManager.close() on cancelPairing()');
+            _this2.isCancelled = false;
             reject(false);
           } else {
             console.log('PairingManager.close() success');
